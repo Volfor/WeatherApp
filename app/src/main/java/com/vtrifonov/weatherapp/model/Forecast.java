@@ -43,4 +43,20 @@ public class Forecast {
         private float _3h;
     }
 
+    public long getDate() {
+        return dt;
+    }
+
+    public float getTemperature() {
+        return main.temp;
+    }
+
+    public String getWeatherIcon(int i) {
+        return weather.get(i).icon;
+    }
+
+    public String getWeatherDescription(int i) {
+        return weather.get(i).description;
+    }
+
 }
