@@ -18,6 +18,7 @@ public class RetrieveWeatherTask extends AsyncTask<String, Void, WeatherObject> 
 
     static final String API_KEY = "20be3fa6c35af06a89d2d5fbdb410b6d";
     static final String API_URL = "http://api.openweathermap.org/data/2.5/forecast?q=";
+    public static final String IMG_URL = "http://openweathermap.org/img/w/";
 
     public RetrieveWeatherTask(WeatherGetter weatherGetter) {
         this.weatherGetter = weatherGetter;
@@ -39,7 +40,6 @@ public class RetrieveWeatherTask extends AsyncTask<String, Void, WeatherObject> 
         if (weatherObject != null) {
             weatherGetter.onWeatherLoaded(weatherObject);
         }
-        // TODO: do something with the forecasts
     }
 
     public WeatherObject getWeather(String city, String country) {

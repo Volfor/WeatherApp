@@ -8,9 +8,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.vtrifonov.weatherapp.model.Forecast;
+import com.vtrifonov.weatherapp.model.RetrieveWeatherTask;
 import com.vtrifonov.weatherapp.model.WeatherObject;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,21 +23,22 @@ public class Adapter extends ArrayAdapter<Forecast> {
 
     private final Context context;
     private final ArrayList<Long> dates;
-    private final ArrayList<Float> temperaturess;
+    private final ArrayList<Float> temperatures;
     private final ArrayList<String> icons;
     private final ArrayList<String> descriptions;
 
-    private final static SimpleDateFormat sDate = new SimpleDateFormat("dd", Locale.ENGLISH);
-    private final static SimpleDateFormat sDay = new SimpleDateFormat("EEE", Locale.ENGLISH);
-    private final static SimpleDateFormat sTime = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-    private final static SimpleDateFormat sMonth = new SimpleDateFormat("MMMM", Locale.ENGLISH);
+    private final static SimpleDateFormat fDate = new SimpleDateFormat("dd", Locale.ENGLISH);
+    private final static SimpleDateFormat fDay = new SimpleDateFormat("EEE", Locale.ENGLISH);
+    private final static SimpleDateFormat fTime = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+    private final static SimpleDateFormat fMonth = new SimpleDateFormat("MMMM", Locale.ENGLISH);
 
+    private final static DecimalFormat fTemp = new DecimalFormat("+#;-#");
 
     public Adapter(Context context, WeatherObject weather) {
         super(context, R.layout.list_item, weather.getForecastsList());
         this.context = context;
         this.dates = weather.getForecastsDates();
-        this.temperaturess = weather.getForecastsTemperatures();
+        this.temperatures = weather.getForecastsTemperatures();
         this.icons = weather.getForecastsIcons();
         this.descriptions = weather.getForecastsDescriptions();
     }
@@ -67,15 +71,16 @@ public class Adapter extends ArrayAdapter<Forecast> {
         }
 
         Date date = new Date(dates.get(position) * 1000L);
-        int temperature = Math.round(temperaturess.get(position));
+        int temperature = Math.round(temperatures.get(position));
 
-        viewHolder.date.setText(sDate.format(date));
-        viewHolder.day.setText(sDay.format(date));
-        viewHolder.time.setText(sTime.format(date));
-        viewHolder.month.setText(sMonth.format(date));
-        viewHolder.temperature.setText("+" + temperature);
-        viewHolder.icon.setImageDrawable(getContext().getDrawable(android.R.drawable.btn_star));
+        viewHolder.date.setText(fDate.format(date));
+        viewHolder.day.setText(fDay.format(date));
+        viewHolder.time.setText(fTime.format(date));
+        viewHolder.month.setText(fMonth.format(date));
+        viewHolder.temperature.setText(fTemp.format(temperature));
         viewHolder.description.setText(descriptions.get(position));
+
+        loadIcons(context, icons.get(position), viewHolder.icon);
 
         return view;
     }
@@ -88,6 +93,10 @@ public class Adapter extends ArrayAdapter<Forecast> {
         viewHolder.temperature = (TextView) view.findViewById(R.id.txt_temp);
         viewHolder.icon = (ImageView) view.findViewById(R.id.img_icon);
         viewHolder.description = (TextView) view.findViewById(R.id.txt_weather);
+    }
+
+    public void loadIcons(Context context, String code, ImageView imgView) {
+        Picasso.with(context).load(RetrieveWeatherTask.IMG_URL + code + ".png").into(imgView);
     }
 
 }
