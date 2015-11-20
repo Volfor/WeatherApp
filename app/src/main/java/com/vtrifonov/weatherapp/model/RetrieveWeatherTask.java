@@ -5,9 +5,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.vtrifonov.weatherapp.WeatherGetter;
 
-import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -38,6 +36,7 @@ public class RetrieveWeatherTask extends AsyncTask<String, Void, WeatherObject> 
         super.onPostExecute(weatherObject);
 
         if (weatherObject != null) {
+            WeatherSingleton.getInstance().onWeatherLoaded(weatherObject);
             weatherGetter.onWeatherLoaded(weatherObject);
         }
     }
@@ -47,19 +46,10 @@ public class RetrieveWeatherTask extends AsyncTask<String, Void, WeatherObject> 
             URL url = new URL(API_URL + city + "," + country + "&units=metric&APPID=" + API_KEY);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             try {
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                StringBuilder stringBuilder = new StringBuilder();
-                String line;
-                while ((line = bufferedReader.readLine()) != null) {
-                    stringBuilder.append(line).append("\n");
-                }
-                bufferedReader.close();
-                String json = stringBuilder.toString();
-
+                InputStreamReader inputStreamReader = new InputStreamReader(urlConnection.getInputStream());
                 Gson gson = new GsonBuilder().create();
 
-                return gson.fromJson(json, WeatherObject.class);
-
+                return gson.fromJson(inputStreamReader, WeatherObject.class);
             } finally {
                 urlConnection.disconnect();
             }

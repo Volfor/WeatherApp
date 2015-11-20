@@ -24,10 +24,10 @@
                 android:textSize="30sp" />
 
             <TextView
-                android:id="@+id/txt_day"
+                android:id="@+id/txt_month"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="WED"
+                android:text="NOV"
                 android:textAllCaps="true"
                 android:textSize="18sp" />
 
@@ -48,10 +48,10 @@
                 android:textSize="30sp" />
 
             <TextView
-                android:id="@+id/txt_month"
+                android:id="@+id/txt_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="November"
+                android:text="Monday"
                 android:textSize="18sp" />
 
         </LinearLayout>

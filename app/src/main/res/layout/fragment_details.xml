@@ -1,15 +1,261 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:gravity="center"
-        android:text="THIS IS DETAILS FRAGMENT"
-        android:textSize="30sp" />
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="30dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="5dp"
+                    android:text="18"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="November"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="5dp"
+                    android:text="Friday, "
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="23:00"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|right">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+23"
+                android:textSize="35sp" />
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_margin="20dp"
+                android:src="@drawable/weather_icon" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="#fff" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="30dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/DetailsFont"
+                    android:paddingBottom="5dp"
+                    android:text="Min temperature:"
+                    android:textStyle="bold" />
+
+                <TextView
+                    style="@style/DetailsFont"
+                    android:paddingLeft="5dp"
+                    android:text="5 C" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/DetailsFont"
+                    android:paddingBottom="5dp"
+                    android:text="Max temperature:"
+                    android:textStyle="bold" />
+
+                <TextView
+                    style="@style/DetailsFont"
+                    android:paddingLeft="5dp"
+                    android:text="15 C" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/DetailsFont"
+                    android:paddingBottom="5dp"
+                    android:text="Pressure:"
+                    android:textStyle="bold" />
+
+                <TextView
+                    style="@style/DetailsFont"
+                    android:paddingLeft="5dp"
+                    android:text="743 hPa" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/DetailsFont"
+                    android:paddingBottom="5dp"
+                    android:text="Humidity:"
+                    android:textStyle="bold" />
+
+                <TextView
+                    style="@style/DetailsFont"
+                    android:paddingLeft="5dp"
+                    android:text="85 %" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/DetailsFont"
+                    android:paddingBottom="5dp"
+                    android:text="Clouds:"
+                    android:textStyle="bold" />
+
+                <TextView
+                    style="@style/DetailsFont"
+                    android:paddingLeft="5dp"
+                    android:text="75 %" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/DetailsFont"
+                    android:paddingBottom="5dp"
+                    android:text="Wind speed:"
+                    android:textStyle="bold" />
+
+                <TextView
+                    style="@style/DetailsFont"
+                    android:paddingLeft="5dp"
+                    android:text="3 m/sec" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/DetailsFont"
+                    android:paddingBottom="5dp"
+                    android:text="Wind direction:"
+                    android:textStyle="bold" />
+
+                <TextView
+                    style="@style/DetailsFont"
+                    android:paddingLeft="5dp"
+                    android:text="180" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/DetailsFont"
+                    android:paddingBottom="5dp"
+                    android:text="Rain:"
+                    android:textStyle="bold" />
+
+                <TextView
+                    style="@style/DetailsFont"
+                    android:paddingLeft="5dp"
+                    android:text="120 mm" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/DetailsFont"
+                    android:paddingBottom="5dp"
+                    android:text="Snow:"
+                    android:textStyle="bold" />
+
+                <TextView
+                    style="@style/DetailsFont"
+                    android:paddingLeft="5dp"
+                    android:text="140 mm" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

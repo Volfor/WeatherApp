@@ -1,18 +1,17 @@
 package com.vtrifonov.weatherapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ListView;
 
-import com.vtrifonov.weatherapp.Adapter;
 import com.vtrifonov.weatherapp.R;
-import com.vtrifonov.weatherapp.WeatherGetter;
+import com.vtrifonov.weatherapp.fragments.ListFragment;
 import com.vtrifonov.weatherapp.model.RetrieveWeatherTask;
+import com.vtrifonov.weatherapp.model.WeatherGetter;
 import com.vtrifonov.weatherapp.model.WeatherObject;
 
-public class MainActivity extends BaseActivity implements WeatherGetter {
+public class MainActivity extends BaseActivity implements WeatherGetter, ListFragment.OnListItemSelectedListener {
 
-    ListView listView;
-    Adapter adapter;
+    private static ListFragment listFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,13 +20,23 @@ public class MainActivity extends BaseActivity implements WeatherGetter {
 
         RetrieveWeatherTask task = new RetrieveWeatherTask(this);
         task.execute("Cherkasy", "ua");
+
+        if (!isTabletLand())
+            listFragment = (ListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_list_id_single_pane);
     }
 
     @Override
     public void onWeatherLoaded(WeatherObject weatherObject) {
-        listView = (ListView) findViewById(R.id.list_titles);
-        adapter = new Adapter(MainActivity.this, weatherObject);
-        listView.setAdapter(adapter);
+        listFragment.setupListView();
     }
 
+    @Override
+    public void onItemSelected(int position) {
+
+        if (!isTabletLand()) {
+            Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+            startActivity(intent);
+        }
+        //todo:show new activity or update fragment
+    }
 }

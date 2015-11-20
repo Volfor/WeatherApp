@@ -1,6 +1,4 @@
-package com.vtrifonov.weatherapp;
-
-import com.vtrifonov.weatherapp.model.WeatherObject;
+package com.vtrifonov.weatherapp.model;
 
 public interface WeatherGetter {
     void onWeatherLoaded(WeatherObject weatherObject);

@@ -1,4 +1,4 @@
-package com.vtrifonov.weatherapp;
+package com.vtrifonov.weatherapp.model;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,9 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.vtrifonov.weatherapp.model.Forecast;
-import com.vtrifonov.weatherapp.model.RetrieveWeatherTask;
-import com.vtrifonov.weatherapp.model.WeatherObject;
+import com.vtrifonov.weatherapp.R;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -28,9 +26,9 @@ public class Adapter extends ArrayAdapter<Forecast> {
     private final ArrayList<String> descriptions;
 
     private final static SimpleDateFormat fDate = new SimpleDateFormat("dd", Locale.ENGLISH);
-    private final static SimpleDateFormat fDay = new SimpleDateFormat("EEE", Locale.ENGLISH);
+    private final static SimpleDateFormat fDay = new SimpleDateFormat("EEEE", Locale.ENGLISH);
     private final static SimpleDateFormat fTime = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-    private final static SimpleDateFormat fMonth = new SimpleDateFormat("MMMM", Locale.ENGLISH);
+    private final static SimpleDateFormat fMonth = new SimpleDateFormat("MMM", Locale.ENGLISH);
 
     private final static DecimalFormat fTemp = new DecimalFormat("+#;-#");
 
@@ -88,8 +86,8 @@ public class Adapter extends ArrayAdapter<Forecast> {
     public void initViews(ViewHolder viewHolder, View view) {
         viewHolder.date = (TextView) view.findViewById(R.id.txt_date);
         viewHolder.day = (TextView) view.findViewById(R.id.txt_day);
-        viewHolder.time = (TextView) view.findViewById(R.id.txt_time);
         viewHolder.month = (TextView) view.findViewById(R.id.txt_month);
+        viewHolder.time = (TextView) view.findViewById(R.id.txt_time);
         viewHolder.temperature = (TextView) view.findViewById(R.id.txt_temp);
         viewHolder.icon = (ImageView) view.findViewById(R.id.img_icon);
         viewHolder.description = (TextView) view.findViewById(R.id.txt_weather);
