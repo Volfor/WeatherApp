@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+
+    <string name="temp_format_details">%s °C</string>
+    <string name="pressure_format">%s hPa</string>
+    <string name="percents_format">%s %%</string>
+    <string name="wind_speed_format">%s m/sec</string>
+    <string name="wind_direction_format">%s°</string>
+    <string name="precipitation_format">%s mm</string>
+
 </resources>

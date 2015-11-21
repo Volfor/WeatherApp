@@ -1,5 +1,7 @@
 package com.vtrifonov.weatherapp.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 public class Forecast {
@@ -36,10 +38,12 @@ public class Forecast {
     }
 
     class Rain {
+        @SerializedName("3h")
         private float _3h;
     }
 
     class Snow {
+        @SerializedName("3h")
         private float _3h;
     }
 
@@ -57,6 +61,54 @@ public class Forecast {
 
     public String getWeatherDescription(int i) {
         return weather.get(i).description;
+    }
+
+    public float getMinTemerature() {
+        return main.temp_min;
+    }
+
+    public float getMaxTemerature() {
+        return main.temp_max;
+    }
+
+    public float getPressure() {
+        return main.pressure;
+    }
+
+    public float getHumidity() {
+        return main.humidity;
+    }
+
+    public float getClouds() {
+        return clouds.all;
+    }
+
+    public float getWindSpeed() {
+        return wind.speed;
+    }
+
+    public float getWindDirection() {
+        return wind.deg;
+    }
+
+    public float getRain() {
+        if (rain != null) {
+            return rain._3h;
+        } else {
+            return -1;
+        }
+    }
+
+    public float getSnow() {
+        if (snow != null) {
+            return snow._3h;
+        } else {
+            return -1;
+        }
+    }
+
+    public String getWeatherMain(int i) {
+        return weather.get(i).main;
     }
 
 }

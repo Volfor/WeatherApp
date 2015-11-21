@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <fragment
-        android:id="@+id/fragment_details_id_single_pane"
+        android:id="@+id/details_fragment"
         android:name="com.vtrifonov.weatherapp.fragments.DetailsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

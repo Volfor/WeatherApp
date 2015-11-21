@@ -7,10 +7,10 @@
     android:orientation="vertical">
 
     <fragment
-        android:id="@+id/fragment_list_id_single_pane"
+        android:id="@+id/list_fragment"
+        android:name="com.vtrifonov.weatherapp.fragments.ListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.vtrifonov.weatherapp.fragments.ListFragment"
         tools:layout="@layout/fragment_list" />
 
 </LinearLayout>

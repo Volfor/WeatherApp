@@ -4,14 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,13 +14,15 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="30dp">
+            android:paddingLeft="20dp"
+            android:paddingRight="15dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="5dp"
@@ -36,6 +30,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/month"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="November"
@@ -48,6 +43,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/day"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="5dp"
@@ -55,6 +51,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="23:00"
@@ -64,22 +61,51 @@
 
         </LinearLayout>
 
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|right">
+            android:layout_height="wrap_content"
+            android:gravity="center|right"
+            android:orientation="vertical"
+            android:paddingBottom="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="20dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+23"
-                android:textSize="35sp" />
+                android:gravity="center"
+                android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_margin="20dp"
-                android:src="@drawable/weather_icon" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/temp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+23"
+                        android:textSize="35sp" />
+
+                    <ImageView
+                        android:id="@+id/icon"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@drawable/weather_icon" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/weather_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="light rain" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
@@ -112,6 +138,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/min_temp"
                     style="@style/DetailsFont"
                     android:paddingLeft="5dp"
                     android:text="5 C" />
@@ -129,6 +156,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/max_temp"
                     style="@style/DetailsFont"
                     android:paddingLeft="5dp"
                     android:text="15 C" />
@@ -146,6 +174,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/pressure"
                     style="@style/DetailsFont"
                     android:paddingLeft="5dp"
                     android:text="743 hPa" />
@@ -163,6 +192,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/humidity"
                     style="@style/DetailsFont"
                     android:paddingLeft="5dp"
                     android:text="85 %" />
@@ -180,6 +210,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/clouds"
                     style="@style/DetailsFont"
                     android:paddingLeft="5dp"
                     android:text="75 %" />
@@ -197,6 +228,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/wind_speed"
                     style="@style/DetailsFont"
                     android:paddingLeft="5dp"
                     android:text="3 m/sec" />
@@ -214,6 +246,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/wind_dir"
                     style="@style/DetailsFont"
                     android:paddingLeft="5dp"
                     android:text="180" />
@@ -221,8 +254,10 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/rain_view"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/DetailsFont"
@@ -231,6 +266,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/rain"
                     style="@style/DetailsFont"
                     android:paddingLeft="5dp"
                     android:text="120 mm" />
@@ -238,8 +274,10 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/snow_view"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/DetailsFont"
@@ -248,6 +286,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/snow"
                     style="@style/DetailsFont"
                     android:paddingLeft="5dp"
                     android:text="140 mm" />
