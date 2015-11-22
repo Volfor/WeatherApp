@@ -1,25 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:layout_height="match_parent">
 
-    <fragment
-        android:id="@+id/list_fragment"
-        android:name="com.vtrifonov.weatherapp.fragments.ListFragment"
-        android:layout_width="0dp"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        tools:layout="@layout/fragment_list" />
+        android:orientation="vertical">
 
-    <fragment
-        android:id="@+id/details_fragment"
-        android:name="com.vtrifonov.weatherapp.fragments.DetailsFragment"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="2"
-        tools:layout="@layout/fragment_details" />
+        <include
+            android:id="@+id/app_toolbar"
+            layout="@layout/app_bar" />
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <fragment
+                android:id="@+id/list_fragment"
+                android:name="com.vtrifonov.weatherapp.fragments.ListFragment"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                tools:layout="@layout/fragment_list" />
+
+            <fragment
+                android:id="@+id/details_fragment"
+                android:name="com.vtrifonov.weatherapp.fragments.DetailsFragment"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                tools:layout="@layout/fragment_details" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

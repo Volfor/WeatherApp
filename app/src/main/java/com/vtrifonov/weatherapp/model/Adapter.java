@@ -13,17 +13,13 @@ import com.vtrifonov.weatherapp.R;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
 public class Adapter extends ArrayAdapter<Forecast> {
 
     private final Context context;
-    private final ArrayList<Long> dates;
-    private final ArrayList<Float> temperatures;
-    private final ArrayList<String> icons;
-    private final ArrayList<String> descriptions;
+    private WeatherObject weatherObject;
 
     private final static SimpleDateFormat fDate = new SimpleDateFormat("dd", Locale.ENGLISH);
     private final static SimpleDateFormat fDay = new SimpleDateFormat("EEEE", Locale.ENGLISH);
@@ -35,10 +31,7 @@ public class Adapter extends ArrayAdapter<Forecast> {
     public Adapter(Context context, WeatherObject weather) {
         super(context, R.layout.list_item, weather.getForecastsList());
         this.context = context;
-        this.dates = weather.getForecastsDates();
-        this.temperatures = weather.getForecastsTemperatures();
-        this.icons = weather.getForecastsIcons();
-        this.descriptions = weather.getForecastsDescriptions();
+        this.weatherObject = weather;
     }
 
     static class ViewHolder {
@@ -68,17 +61,17 @@ public class Adapter extends ArrayAdapter<Forecast> {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        Date date = new Date(dates.get(position) * 1000L);
-        int temperature = Math.round(temperatures.get(position));
+        Date date = new Date(weatherObject.getForecastsDates().get(position) * 1000L);
+        int temperature = Math.round(weatherObject.getForecastsTemperatures().get(position));
 
         viewHolder.date.setText(fDate.format(date));
         viewHolder.day.setText(fDay.format(date));
         viewHolder.time.setText(fTime.format(date));
         viewHolder.month.setText(fMonth.format(date));
         viewHolder.temperature.setText(fTemp.format(temperature));
-        viewHolder.description.setText(descriptions.get(position));
+        viewHolder.description.setText(weatherObject.getForecastsDescriptions().get(position));
 
-        loadIcons(context, icons.get(position), viewHolder.icon);
+        loadIcons(context, weatherObject.getForecastsIcons().get(position), viewHolder.icon);
 
         return view;
     }

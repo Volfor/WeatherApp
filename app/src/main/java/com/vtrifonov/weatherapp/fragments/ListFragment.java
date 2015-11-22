@@ -20,6 +20,7 @@ public class ListFragment extends Fragment {
     private OnListItemSelectedListener itemSelectedListener;
 
     private ListView listView;
+    Adapter adapter;
 
     public interface OnListItemSelectedListener {
         void onItemSelected(int position);
@@ -62,6 +63,7 @@ public class ListFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                listView.setItemChecked(5, true);
                 itemSelectedListener.onItemSelected(position);
             }
         });
@@ -69,8 +71,14 @@ public class ListFragment extends Fragment {
 
     public void setupListView() {
         WeatherObject weatherObject = WeatherSingleton.getInstance().getWeather();
-        Adapter adapter = new Adapter(getActivity(), weatherObject);
-        listView.setAdapter(adapter);
+        if (adapter == null) {
+            adapter = new Adapter(getActivity(), weatherObject);
+            listView.setAdapter(adapter);
+        } else {
+            adapter.clear();
+            adapter.addAll(weatherObject.getForecastsList());
+            adapter.notifyDataSetChanged();
+        }
     }
 
 }
