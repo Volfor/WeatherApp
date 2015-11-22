@@ -10,8 +10,8 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,6 +21,13 @@
         <include
             android:id="@+id/app_toolbar"
             layout="@layout/app_bar" />
+
+        <fragment
+            android:id="@+id/no_connection_fragment"
+            android:name="com.vtrifonov.weatherapp.fragments.NoConnectionFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_no_connection" />
 
         <fragment
             android:id="@+id/list_fragment"
