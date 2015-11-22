@@ -8,7 +8,6 @@
         android:id="@+id/settings_bar"
         layout="@layout/app_bar" />
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +17,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="City:"
+            android:text="@string/city_txt"
             android:textSize="20sp" />
 
         <EditText
@@ -37,15 +36,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Country code:"
+            android:text="@string/country_code_txt"
             android:textSize="20sp" />
 
         <EditText
             android:id="@+id/edit_country"
-            android:layout_width="70dp"
+            android:layout_width="65dp"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
-
 
 </LinearLayout>

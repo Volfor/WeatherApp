@@ -40,6 +40,8 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
         currCity = (TextView) findViewById(R.id.current_city);
         spinner = (ProgressBar) findViewById(R.id.progressBar);
 
+        currCity.setText(String.format(getString(R.string.current_city_format), city, country));
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
 
@@ -56,12 +58,13 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
             position = savedInstanceState.getInt("position");
             if (position >= 0) {
                 if (isTabletLand()) {
-                    currCity.setText(String.format(getString(R.string.current_city_format), city, country));
                     detailsFragment.updateDetails(position);
                 } else {
-                    Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-                    intent.putExtra("position", position);
-                    startActivity(intent);
+                    if (detailsFragment != null) {
+                        Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+                        intent.putExtra("position", position);
+                        startActivity(intent);
+                    }
                 }
             }
         }
@@ -111,18 +114,18 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
     }
 
     public void checkDefaults() {
-        if (SettingsActivity.getDefaults("city", this) == null ||
-                SettingsActivity.getDefaults("city", this).equals("")) {
-            SettingsActivity.setDefaults("city", "Cherkasy", this);
-        }
-
-        if (SettingsActivity.getDefaults("country", this) == null ||
-                SettingsActivity.getDefaults("country", this).equals("")) {
-            SettingsActivity.setDefaults("country", "ua", this);
-        }
-
         city = SettingsActivity.getDefaults("city", this);
         country = SettingsActivity.getDefaults("country", this);
+
+        if (city == null || city.trim().length() == 0) {
+            SettingsActivity.setDefaults("city", "Cherkasy", this);
+            city = SettingsActivity.getDefaults("city", this);
+        }
+
+        if (country == null || country.trim().length() == 0) {
+            SettingsActivity.setDefaults("country", "ua", this);
+            country = SettingsActivity.getDefaults("country", this);
+        }
     }
 
     public void refresh() {
@@ -136,4 +139,5 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
         savedInstanceState.putInt("position", position);
         super.onSaveInstanceState(savedInstanceState);
     }
+
 }

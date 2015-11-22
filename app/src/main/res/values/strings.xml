@@ -8,5 +8,18 @@
     <string name="wind_direction_format">%s°</string>
     <string name="precipitation_format">%s mm</string>
     <string name="current_city_format" formatted="false">%s, %S</string>
+    <string name="city_txt">City:</string>
+    <string name="country_code_txt">Country code:</string>
+    <string name="min_temp_txt">Min temperature:</string>
+    <string name="max_temp_txt">Max temperature:</string>
+    <string name="pressure_txt">Pressure:</string>
+    <string name="humidity_txt">Humidity:</string>
+    <string name="clouds_txt">Clouds:</string>
+    <string name="wind_speed_txt">Wind speed:</string>
+    <string name="wind_dir_txt">Wind direction:</string>
+    <string name="rain_txt">Rain:</string>
+    <string name="snow_txt">Snow:</string>
+    <string name="refresh_txt">Refresh</string>
+    <string name="settings_txt">Settings</string>
 
 </resources>

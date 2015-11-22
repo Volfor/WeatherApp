@@ -1,6 +1,9 @@
 package com.vtrifonov.weatherapp.activities;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.vtrifonov.weatherapp.R;
 import com.vtrifonov.weatherapp.fragments.DetailsFragment;
@@ -11,6 +14,18 @@ public class DetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.details_bar);
+        setSupportActionBar(toolbar);
+
+        String city = SettingsActivity.getDefaults("city", this);
+        String country = SettingsActivity.getDefaults("country", this);
+
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setTitle(String.format(getString(R.string.current_city_format), city, country));
+        }
 
         if (isTabletLand()) {
             finish();
@@ -23,6 +38,17 @@ public class DetailsActivity extends BaseActivity {
                 .findFragmentById(R.id.details_fragment);
 
         detailsFragment.updateDetails(position);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

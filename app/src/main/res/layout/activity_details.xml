@@ -6,6 +6,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/details_bar"
+        layout="@layout/app_bar" />
+
     <fragment
         android:id="@+id/details_fragment"
         android:name="com.vtrifonov.weatherapp.fragments.DetailsFragment"

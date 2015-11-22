@@ -20,14 +20,12 @@
                 android:id="@+id/txt_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="18"
                 android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/txt_month"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="NOV"
                 android:textAllCaps="true"
                 android:textSize="18sp" />
 
@@ -44,14 +42,12 @@
                 android:id="@+id/txt_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00:03"
                 android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/txt_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Monday"
                 android:textSize="18sp" />
 
         </LinearLayout>
@@ -74,15 +70,13 @@
                 android:id="@+id/txt_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+20"
                 android:textSize="40sp" />
 
             <ImageView
                 android:id="@+id/img_icon"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="15dp"
-                android:src="@android:drawable/btn_star_big_on" />
+                android:layout_marginLeft="15dp" />
 
         </LinearLayout>
 
@@ -97,12 +91,10 @@
                 android:id="@+id/txt_weather"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="light rain"
                 android:textStyle="italic" />
 
         </LinearLayout>
 
     </LinearLayout>
-
 
 </LinearLayout>
