@@ -57,27 +57,27 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
             supportActionBar.setIcon(R.mipmap.ic_launcher);
         }
 
-        if (savedInstanceState == null) {
-            if (isNetworkConnected()) {
+        if (isNetworkConnected()) {
+            if (savedInstanceState == null) {
                 spinner.setVisibility(View.VISIBLE);
                 RetrieveWeatherTask task = new RetrieveWeatherTask(this);
                 task.execute(city, country);
             } else {
-                noConnectionFragment.getView().setVisibility(View.VISIBLE);
-            }
-        } else {
-            position = savedInstanceState.getInt("position");
-            if (position >= 0) {
-                if (isTabletLand()) {
-                    detailsFragment.updateDetails(position);
-                } else {
-                    if (detailsFragment != null) {
-                        Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-                        intent.putExtra("position", position);
-                        startActivity(intent);
+                position = savedInstanceState.getInt("position");
+                if (position >= 0) {
+                    if (isTabletLand()) {
+                        detailsFragment.updateDetails(position);
+                    } else {
+                        if (detailsFragment != null) {
+                            Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+                            intent.putExtra("position", position);
+                            startActivity(intent);
+                        }
                     }
                 }
             }
+        } else {
+            noConnectionFragment.getView().setVisibility(View.VISIBLE);
         }
     }
 
