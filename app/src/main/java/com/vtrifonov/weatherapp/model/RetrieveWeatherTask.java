@@ -3,14 +3,22 @@ package com.vtrifonov.weatherapp.model;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.vtrifonov.weatherapp.activities.MainActivity;
 
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
 
-public class RetrieveWeatherTask extends AsyncTask<String, Void, WeatherObject> {
+import io.realm.Realm;
+import io.realm.RealmObject;
+
+public class RetrieveWeatherTask extends AsyncTask<String, Void, ArrayList<Forecast>> {
 
     private WeatherGetter weatherGetter;
 
@@ -23,7 +31,7 @@ public class RetrieveWeatherTask extends AsyncTask<String, Void, WeatherObject> 
     }
 
     @Override
-    protected WeatherObject doInBackground(String... args) {
+    protected ArrayList<Forecast> doInBackground(String... args) {
 
         String city = args[0],
                 country = args[1];
@@ -32,25 +40,48 @@ public class RetrieveWeatherTask extends AsyncTask<String, Void, WeatherObject> 
     }
 
     @Override
-    protected void onPostExecute(WeatherObject weatherObject) {
-        super.onPostExecute(weatherObject);
+    protected void onPostExecute(ArrayList<Forecast> forecasts) {
+        super.onPostExecute(forecasts);
 
-        if (weatherObject != null) {
-            WeatherSingleton.getInstance().onWeatherLoaded(weatherObject);
-            weatherGetter.onWeatherLoaded(weatherObject);
+        if (!forecasts.isEmpty()) {
+            weatherGetter.onWeatherLoaded();
         }
     }
 
-    public WeatherObject getWeather(String city, String country) {
+    public ArrayList<Forecast> getWeather(String city, String country) {
         try {
             URL url = new URL(API_URL + city + "," + country + "&units=metric&APPID=" + API_KEY);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            try {
-                InputStreamReader inputStreamReader = new InputStreamReader(urlConnection.getInputStream());
-                Gson gson = new GsonBuilder().create();
+            Realm realm = null;
 
-                return gson.fromJson(inputStreamReader, WeatherObject.class);
+            try {
+                realm = Realm.getInstance(MainActivity.realmConfiguration);
+
+                InputStreamReader inputStreamReader = new InputStreamReader(urlConnection.getInputStream());
+
+                Gson gson = new GsonBuilder()
+                        .setExclusionStrategies(new ExclusionStrategy() {
+                            @Override
+                            public boolean shouldSkipField(FieldAttributes f) {
+                                return f.getDeclaringClass().equals(RealmObject.class);
+                            }
+
+                            @Override
+                            public boolean shouldSkipClass(Class<?> clazz) {
+                                return false;
+                            }
+                        })
+                        .create();
+
+                WeatherObject weatherObject = gson.fromJson(inputStreamReader, WeatherObject.class);
+
+                realm.beginTransaction();
+                Collection<Forecast> realmForecasts = realm.copyToRealmOrUpdate(weatherObject.getForecasts());
+                realm.commitTransaction();
+
+                return new ArrayList<>(realmForecasts);
             } finally {
+                realm.close();
                 urlConnection.disconnect();
             }
         } catch (Exception e) {

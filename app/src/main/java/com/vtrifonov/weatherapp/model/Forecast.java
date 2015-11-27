@@ -2,113 +2,84 @@ package com.vtrifonov.weatherapp.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-public class Forecast {
-    private long dt;
-    private WeatherConditions main;
-    private ArrayList<Weather> weather;
+public class Forecast extends RealmObject {
+    @PrimaryKey
+    @SerializedName("dt")
+    private long date;
+    @SerializedName("main")
+    private WeatherConditions weatherConditions;
+    private RealmList<Weather> weather;
     private Clouds clouds;
     private Wind wind;
     private Rain rain;
     private Snow snow;
 
-    class WeatherConditions {
-        private float temp;
-        private float temp_min;
-        private float temp_max;
-        private float pressure;
-        private float humidity;
-    }
-
-    class Weather {
-        private int id;
-        private String main;
-        private String description;
-        private String icon;
-    }
-
-    class Clouds {
-        private float all;
-    }
-
-    class Wind {
-        private float speed;
-        private float deg;
-    }
-
-    class Rain {
-        @SerializedName("3h")
-        private float _3h;
-    }
-
-    class Snow {
-        @SerializedName("3h")
-        private float _3h;
-    }
 
     public long getDate() {
-        return dt;
+        return date;
     }
 
-    public float getTemperature() {
-        return main.temp;
+    public void setDate(long date) {
+        this.date = date;
     }
 
-    public String getWeatherIcon(int i) {
-        return weather.get(i).icon;
+    public WeatherConditions getWeatherConditions() {
+        return weatherConditions;
     }
 
-    public String getWeatherDescription(int i) {
-        return weather.get(i).description;
+    public void setWeatherConditions(WeatherConditions weatherConditions) {
+        this.weatherConditions = weatherConditions;
     }
 
-    public float getMinTemerature() {
-        return main.temp_min;
+    public RealmList<Weather> getWeather() {
+        return weather;
     }
 
-    public float getMaxTemerature() {
-        return main.temp_max;
+    public void setWeather(RealmList<Weather> weather) {
+        this.weather = weather;
     }
 
-    public float getPressure() {
-        return main.pressure;
+    public Clouds getClouds() {
+        return clouds;
     }
 
-    public float getHumidity() {
-        return main.humidity;
+    public void setClouds(Clouds clouds) {
+        this.clouds = clouds;
     }
 
-    public float getClouds() {
-        return clouds.all;
+    public Wind getWind() {
+        return wind;
     }
 
-    public float getWindSpeed() {
-        return wind.speed;
+    public void setWind(Wind wind) {
+        this.wind = wind;
     }
 
-    public float getWindDirection() {
-        return wind.deg;
+    public Rain getRain() {
+        return rain;
     }
 
-    public float getRain() {
-        if (rain != null) {
-            return rain._3h;
-        } else {
-            return -1;
-        }
+    public void setRain(Rain rain) {
+        this.rain = rain;
     }
 
-    public float getSnow() {
-        if (snow != null) {
-            return snow._3h;
-        } else {
-            return -1;
-        }
+    public Snow getSnow() {
+        return snow;
     }
 
-    public String getWeatherMain(int i) {
-        return weather.get(i).main;
+    public void setSnow(Snow snow) {
+        this.snow = snow;
     }
-
 }
+
+
+
+
+
+
+
+

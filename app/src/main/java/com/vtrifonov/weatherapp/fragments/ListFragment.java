@@ -11,16 +11,19 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.vtrifonov.weatherapp.R;
+import com.vtrifonov.weatherapp.activities.MainActivity;
 import com.vtrifonov.weatherapp.model.Adapter;
-import com.vtrifonov.weatherapp.model.WeatherObject;
-import com.vtrifonov.weatherapp.model.WeatherSingleton;
+import com.vtrifonov.weatherapp.model.Forecast;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class ListFragment extends Fragment {
 
     private OnListItemSelectedListener itemSelectedListener;
 
     private ListView listView;
-    Adapter adapter;
+    private Adapter adapter;
 
     public interface OnListItemSelectedListener {
         void onItemSelected(int position);
@@ -50,9 +53,7 @@ public class ListFragment extends Fragment {
         listView = (ListView) view.findViewById(R.id.list_titles);
 
         if (savedInstanceState != null) {
-            if (WeatherSingleton.getInstance().weatherAvailable()) {
-                setupListView();
-            }
+            setupListView();
         }
     }
 
@@ -63,20 +64,20 @@ public class ListFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                listView.setItemChecked(5, true);
                 itemSelectedListener.onItemSelected(position);
             }
         });
     }
 
     public void setupListView() {
-        WeatherObject weatherObject = WeatherSingleton.getInstance().getWeather();
+        Realm realm = Realm.getInstance(MainActivity.realmConfiguration);
+        RealmResults<Forecast> forecasts = realm.where(Forecast.class).findAll();
+
         if (adapter == null) {
-            adapter = new Adapter(getActivity(), weatherObject);
+            adapter = new Adapter(getActivity(), forecasts);
             listView.setAdapter(adapter);
         } else {
-            adapter.clear();
-            adapter.addAll(weatherObject.getForecastsList());
+            listView.invalidate();
             adapter.notifyDataSetChanged();
         }
     }

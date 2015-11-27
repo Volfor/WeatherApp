@@ -11,19 +11,19 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.vtrifonov.weatherapp.R;
+import com.vtrifonov.weatherapp.activities.MainActivity;
+import com.vtrifonov.weatherapp.model.Forecast;
 import com.vtrifonov.weatherapp.model.RetrieveWeatherTask;
-import com.vtrifonov.weatherapp.model.WeatherObject;
-import com.vtrifonov.weatherapp.model.WeatherSingleton;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+
 public class DetailsFragment extends Fragment {
-
-    protected static WeatherSingleton weatherSingleton = WeatherSingleton.getInstance();
-
     private int currentPosition = -1;
 
     private TextView date_number;
@@ -74,12 +74,18 @@ public class DetailsFragment extends Fragment {
     }
 
     public void updateDetails(int position) {
-        WeatherObject weatherObject = weatherSingleton.getWeather();
+        Realm realm = Realm.getInstance(MainActivity.realmConfiguration);
+        RealmResults<Forecast> forecasts = realm.where(Forecast.class).findAll();
 
-        Date date = new Date(weatherObject.getForecastsDates().get(position) * 1000L);
-        int temperature = Math.round(weatherObject.getForecastsTemperatures().get(position));
-        int min_temperature = Math.round(weatherObject.getForecastsMinTemperatures().get(position));
-        int max_temperature = Math.round(weatherObject.getForecastsMaxTemperatures().get(position));
+        if (realm.isEmpty()) {
+            return;
+        }
+
+        Date date = new Date(forecasts.get(position).getDate() * 1000L);
+        DecimalFormat fPrecipitation = new DecimalFormat("##.###");
+        int temperature = Math.round(forecasts.get(position).getWeatherConditions().getTemp());
+        int min_temperature = Math.round(forecasts.get(position).getWeatherConditions().getTempMin());
+        int max_temperature = Math.round(forecasts.get(position).getWeatherConditions().getTempMax());
 
         date_number.setText(fDate.format(date));
         day.setText(fDay.format(date));
@@ -87,34 +93,36 @@ public class DetailsFragment extends Fragment {
         time.setText(fTime.format(date));
 
         temp.setText(fTemp.format(temperature));
-        weather_description.setText(weatherObject.getForecastsDescriptions().get(position));
+        weather_description.setText(forecasts.get(position).getWeather().get(0).getDescription());
 
-        Picasso.with(getContext()).load(RetrieveWeatherTask.IMG_URL + weatherObject.getForecastsIcons()
-                .get(position) + ".png").into(icon);
+        Picasso.with(getContext()).load(RetrieveWeatherTask.IMG_URL + forecasts.get(position)
+                .getWeather().get(0).getIcon() + ".png").into(icon);
 
         min_temp.setText(String.format(getString(R.string.temp_format_details), min_temperature));
         max_temp.setText(String.format(getString(R.string.temp_format_details), max_temperature));
         pressure.setText(String.format(getString(R.string.pressure_format),
-                weatherObject.getForecastsPressures().get(position)));
+                forecasts.get(position).getWeatherConditions().getPressure()));
         humidity.setText(String.format(getString(R.string.percents_format),
-                weatherObject.getForecastsHumidity().get(position)));
+                forecasts.get(position).getWeatherConditions().getHumidity()));
         clouds.setText(String.format(getString(R.string.percents_format),
-                weatherObject.getForecastsClouds().get(position)));
+                forecasts.get(position).getClouds().getCloudiness()));
         wind_speed.setText(String.format(getString(R.string.wind_speed_format),
-                weatherObject.getForecastsWindSpeed().get(position)));
+                forecasts.get(position).getWind().getSpeed()));
         wind_dir.setText(String.format(getString(R.string.wind_direction_format),
-                weatherObject.getForecastsWindDir().get(position)));
+                forecasts.get(position).getWind().getDeg()));
 
-        if (weatherObject.getForecastsRain().get(position) > 0) {
+        if (forecasts.get(position).getRain() != null && forecasts.get(position).getRain().getPrecipitation() > 0) {
             getActivity().findViewById(R.id.rain_view).setVisibility(View.VISIBLE);
+
             rain.setText(String.format(getString(R.string.precipitation_format),
-                    weatherObject.getForecastsRain().get(position)));
+                    fPrecipitation.format(forecasts.get(position).getRain().getPrecipitation())));
         }
 
-        if (weatherObject.getForecastsSnow().get(position) > 0) {
+        if (forecasts.get(position).getSnow() != null && forecasts.get(position).getSnow().getPrecipitation() > 0) {
             getActivity().findViewById(R.id.snow_view).setVisibility(View.VISIBLE);
+
             snow.setText(String.format(getString(R.string.precipitation_format),
-                    weatherObject.getForecastsSnow().get(position)));
+                    fPrecipitation.format(forecasts.get(position).getSnow().getPrecipitation())));
         }
 
         currentPosition = position;

@@ -19,13 +19,16 @@ import com.vtrifonov.weatherapp.fragments.ListFragment;
 import com.vtrifonov.weatherapp.fragments.NoConnectionFragment;
 import com.vtrifonov.weatherapp.model.RetrieveWeatherTask;
 import com.vtrifonov.weatherapp.model.WeatherGetter;
-import com.vtrifonov.weatherapp.model.WeatherObject;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class MainActivity extends BaseActivity implements WeatherGetter, ListFragment.OnListItemSelectedListener {
 
     private static ListFragment listFragment;
     private static DetailsFragment detailsFragment;
     private static NoConnectionFragment noConnectionFragment;
+    public static RealmConfiguration realmConfiguration;
 
     private String city;
     private String country;
@@ -37,6 +40,8 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        realmConfiguration = new RealmConfiguration.Builder(this).build();
 
         checkDefaults();
 
@@ -57,32 +62,35 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
             supportActionBar.setIcon(R.mipmap.ic_launcher);
         }
 
-        if (isNetworkConnected()) {
-            if (savedInstanceState == null) {
+        if (savedInstanceState == null) {
+            if (isNetworkConnected()) {
                 spinner.setVisibility(View.VISIBLE);
                 RetrieveWeatherTask task = new RetrieveWeatherTask(this);
                 task.execute(city, country);
             } else {
-                position = savedInstanceState.getInt("position");
-                if (position >= 0) {
-                    if (isTabletLand()) {
-                        detailsFragment.updateDetails(position);
-                    } else {
-                        if (detailsFragment != null) {
-                            Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-                            intent.putExtra("position", position);
-                            startActivity(intent);
-                        }
+                if (Realm.getInstance(realmConfiguration).isEmpty())
+                    noConnectionFragment.getView().setVisibility(View.VISIBLE);
+                else
+                    onWeatherLoaded();
+            }
+        } else {
+            position = savedInstanceState.getInt("position");
+            if (position >= 0) {
+                if (isTabletLand()) {
+                    detailsFragment.updateDetails(position);
+                } else {
+                    if (detailsFragment != null) {
+                        Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+                        intent.putExtra("position", position);
+                        startActivity(intent);
                     }
                 }
             }
-        } else {
-            noConnectionFragment.getView().setVisibility(View.VISIBLE);
         }
     }
 
     @Override
-    public void onWeatherLoaded(WeatherObject weatherObject) {
+    public void onWeatherLoaded() {
         listFragment.setupListView();
         currCity.setText(String.format(getString(R.string.current_city_format), city, country));
         if (isTabletLand())
