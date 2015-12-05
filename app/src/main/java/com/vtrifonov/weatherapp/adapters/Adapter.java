@@ -1,4 +1,4 @@
-package com.vtrifonov.weatherapp.model;
+package com.vtrifonov.weatherapp.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.vtrifonov.weatherapp.R;
+import com.vtrifonov.weatherapp.asynctasks.RetrieveWeatherTask;
+import com.vtrifonov.weatherapp.model.Forecast;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;

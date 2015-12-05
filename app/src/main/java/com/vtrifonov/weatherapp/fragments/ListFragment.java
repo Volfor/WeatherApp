@@ -12,7 +12,7 @@ import android.widget.ListView;
 
 import com.vtrifonov.weatherapp.R;
 import com.vtrifonov.weatherapp.activities.MainActivity;
-import com.vtrifonov.weatherapp.model.Adapter;
+import com.vtrifonov.weatherapp.adapters.Adapter;
 import com.vtrifonov.weatherapp.model.Forecast;
 
 import io.realm.Realm;
@@ -70,8 +70,10 @@ public class ListFragment extends Fragment {
     }
 
     public void setupListView() {
+        long currentDate = System.currentTimeMillis() / 1000;
+
         Realm realm = Realm.getInstance(MainActivity.realmConfiguration);
-        RealmResults<Forecast> forecasts = realm.where(Forecast.class).findAll();
+        RealmResults<Forecast> forecasts = realm.where(Forecast.class).greaterThan("date", currentDate).findAll();
 
         if (adapter == null) {
             adapter = new Adapter(getActivity(), forecasts);

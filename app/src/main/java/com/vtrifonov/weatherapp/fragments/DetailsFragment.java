@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso;
 import com.vtrifonov.weatherapp.R;
 import com.vtrifonov.weatherapp.activities.MainActivity;
 import com.vtrifonov.weatherapp.model.Forecast;
-import com.vtrifonov.weatherapp.model.RetrieveWeatherTask;
+import com.vtrifonov.weatherapp.asynctasks.RetrieveWeatherTask;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;

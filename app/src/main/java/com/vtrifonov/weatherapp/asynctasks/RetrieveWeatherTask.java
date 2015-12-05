@@ -1,4 +1,4 @@
-package com.vtrifonov.weatherapp.model;
+package com.vtrifonov.weatherapp.asynctasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -8,6 +8,9 @@ import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.vtrifonov.weatherapp.activities.MainActivity;
+import com.vtrifonov.weatherapp.model.Forecast;
+import com.vtrifonov.weatherapp.interfaces.WeatherGetter;
+import com.vtrifonov.weatherapp.model.WeatherObject;
 
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;

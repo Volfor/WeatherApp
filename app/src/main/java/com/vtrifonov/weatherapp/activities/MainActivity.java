@@ -17,8 +17,8 @@ import com.vtrifonov.weatherapp.R;
 import com.vtrifonov.weatherapp.fragments.DetailsFragment;
 import com.vtrifonov.weatherapp.fragments.ListFragment;
 import com.vtrifonov.weatherapp.fragments.NoConnectionFragment;
-import com.vtrifonov.weatherapp.model.RetrieveWeatherTask;
-import com.vtrifonov.weatherapp.model.WeatherGetter;
+import com.vtrifonov.weatherapp.asynctasks.RetrieveWeatherTask;
+import com.vtrifonov.weatherapp.interfaces.WeatherGetter;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
