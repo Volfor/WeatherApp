@@ -1,6 +1,7 @@
 package com.vtrifonov.weatherapp.activities;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -18,8 +19,8 @@ public class DetailsActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.details_bar);
         setSupportActionBar(toolbar);
 
-        String city = SettingsActivity.getDefaults("city", this);
-        String country = SettingsActivity.getDefaults("country", this);
+        String city = PreferenceManager.getDefaultSharedPreferences(this).getString("city", "Cherkasy");
+        String country = PreferenceManager.getDefaultSharedPreferences(this).getString("country", "ua");
 
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {

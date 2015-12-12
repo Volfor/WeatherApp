@@ -10,6 +10,8 @@ import com.vtrifonov.weatherapp.model.Forecast;
 
 import java.util.ArrayList;
 
+import io.realm.Realm;
+
 public class UpdateWeatherReceiver extends BroadcastReceiver {
 
     ArrayList<Forecast> forecasts;
@@ -20,7 +22,12 @@ public class UpdateWeatherReceiver extends BroadcastReceiver {
 
             forecasts = UpdateWeatherService.GetForecasts();
 
-            UpdateWeatherService.WriteToRealm(forecasts);
+            Realm realm = Realm.getInstance(UpdateWeatherService.realmConfiguration);
+
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(forecasts);
+            realm.commitTransaction();
+            realm.close();
 
             UpdateWeatherService.notificationManager.cancel(UpdateWeatherService.NOTIFICATION_ID);
 

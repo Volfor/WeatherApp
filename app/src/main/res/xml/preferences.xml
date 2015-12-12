@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="location_settings"
+        android:title="Location settings">
+        <EditTextPreference
+            android:defaultValue="Cherkasy"
+            android:key="city"
+            android:summary="City for which you want to receive forecast"
+            android:title="City" />
+        <EditTextPreference
+            android:defaultValue="ua"
+            android:key="country"
+            android:summary="Country code of your city"
+            android:title="Country code" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="service_settings"
+        android:title="Service settings">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="service_enabled"
+            android:summary="Service will check for forecast updates"
+            android:title="Enable service?" />
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/interval_names"
+            android:entryValues="@array/interval_values"
+            android:key="update_interval"
+            android:summary="How often you want to check for updates?"
+            android:title="Forecast checking interval" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
+

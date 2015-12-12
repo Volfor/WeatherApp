@@ -20,6 +20,24 @@
     <string name="rain_txt">Rain:</string>
     <string name="snow_txt">Snow:</string>
     <string name="refresh_txt">Refresh</string>
-    <string name="settings_txt">Settings</string>
+    <string name="preferences_label">Preferences</string>
+
+    <string-array name="interval_names">
+        <item>1 minute</item>
+        <item>5 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+    </string-array>
+
+    <string-array name="interval_values">
+        <item>1</item>
+        <item>5</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+    </string-array>
 
 </resources>

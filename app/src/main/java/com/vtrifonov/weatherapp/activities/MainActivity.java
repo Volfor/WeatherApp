@@ -2,6 +2,7 @@ package com.vtrifonov.weatherapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -24,12 +25,14 @@ import com.vtrifonov.weatherapp.services.UpdateWeatherService;
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class MainActivity extends BaseActivity implements WeatherGetter, ListFragment.OnListItemSelectedListener {
 
     private static ListFragment listFragment;
     private static DetailsFragment detailsFragment;
     private static NoConnectionFragment noConnectionFragment;
+    public static RealmConfiguration realmConfiguration;
 
     private String city;
     private String country;
@@ -42,9 +45,14 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startService(new Intent(MainActivity.this, UpdateWeatherService.class));
+        realmConfiguration = new RealmConfiguration.Builder(this).build();
 
-        checkDefaults();
+        if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("service_enabled", true)){
+            startService(new Intent(this, UpdateWeatherService.class));
+        }
+
+        city = PreferenceManager.getDefaultSharedPreferences(this).getString("city", "Cherkasy");
+        country = PreferenceManager.getDefaultSharedPreferences(this).getString("country", "ua");
 
         listFragment = (ListFragment) getSupportFragmentManager().findFragmentById(R.id.list_fragment);
         detailsFragment = (DetailsFragment) getSupportFragmentManager().findFragmentById(R.id.details_fragment);
@@ -92,7 +100,14 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
 
     @Override
     public void onWeatherLoaded(ArrayList<Forecast> forecasts) {
-        UpdateWeatherService.WriteToRealm(forecasts);
+//        UpdateWeatherService.WriteToRealm(forecasts);
+        Realm realm = Realm.getInstance(realmConfiguration);
+
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(forecasts);
+        realm.commitTransaction();
+        realm.close();
+
         updateInfo();
     }
 
@@ -126,11 +141,11 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                Intent intent = new Intent(MainActivity.this, PreferencesActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.action_refresh:
-                checkDefaults();
+//                checkDefaults();
                 refresh();
                 return true;
             default:
@@ -138,24 +153,30 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
         }
     }
 
-    public void checkDefaults() {
-        city = SettingsActivity.getDefaults("city", MainActivity.this);
-        country = SettingsActivity.getDefaults("country", MainActivity.this);
-
-        if (city == null || city.trim().length() == 0) {
-            SettingsActivity.setDefaults("city", "Cherkasy", MainActivity.this);
-            city = SettingsActivity.getDefaults("city", MainActivity.this);
-        }
-
-        if (country == null || country.trim().length() == 0) {
-            SettingsActivity.setDefaults("country", "ua", MainActivity.this);
-            country = SettingsActivity.getDefaults("country", MainActivity.this);
-        }
-    }
+//    public void checkDefaults() {
+////        city = SettingsActivity.getDefaults("city", MainActivity.this);
+////        country = SettingsActivity.getDefaults("country", MainActivity.this);
+//
+//
+//
+////        if (city == null || city.trim().length() == 0) {
+////            SettingsActivity.setDefaults("city", "Cherkasy", MainActivity.this);
+////            city = SettingsActivity.getDefaults("city", MainActivity.this);
+////        }
+////
+////        if (country == null || country.trim().length() == 0) {
+////            SettingsActivity.setDefaults("country", "ua", MainActivity.this);
+////            country = SettingsActivity.getDefaults("country", MainActivity.this);
+////        }
+//    }
 
     public void refresh() {
         if (NetworkConnection.isConnected(MainActivity.this)) {
             spinner.setVisibility(View.VISIBLE);
+
+            city = PreferenceManager.getDefaultSharedPreferences(this).getString("city", "Cherkasy");
+            country = PreferenceManager.getDefaultSharedPreferences(this).getString("country", "ua");
+
             RetrieveWeatherTask task = new RetrieveWeatherTask(MainActivity.this);
             task.execute(city, country);
             noConnectionFragment.getView().setVisibility(View.GONE);
