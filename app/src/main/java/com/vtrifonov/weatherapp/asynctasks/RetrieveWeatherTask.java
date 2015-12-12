@@ -7,18 +7,15 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.vtrifonov.weatherapp.activities.MainActivity;
-import com.vtrifonov.weatherapp.model.Forecast;
 import com.vtrifonov.weatherapp.interfaces.WeatherGetter;
+import com.vtrifonov.weatherapp.model.Forecast;
 import com.vtrifonov.weatherapp.model.WeatherObject;
 
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 
-import io.realm.Realm;
 import io.realm.RealmObject;
 
 public class RetrieveWeatherTask extends AsyncTask<String, Void, ArrayList<Forecast>> {
@@ -46,8 +43,8 @@ public class RetrieveWeatherTask extends AsyncTask<String, Void, ArrayList<Forec
     protected void onPostExecute(ArrayList<Forecast> forecasts) {
         super.onPostExecute(forecasts);
 
-        if (!forecasts.isEmpty()) {
-            weatherGetter.onWeatherLoaded();
+        if (forecasts != null && !forecasts.isEmpty()) {
+            weatherGetter.onWeatherLoaded(forecasts);
         }
     }
 
@@ -55,11 +52,8 @@ public class RetrieveWeatherTask extends AsyncTask<String, Void, ArrayList<Forec
         try {
             URL url = new URL(API_URL + city + "," + country + "&units=metric&APPID=" + API_KEY);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            Realm realm = null;
 
             try {
-                realm = Realm.getInstance(MainActivity.realmConfiguration);
-
                 InputStreamReader inputStreamReader = new InputStreamReader(urlConnection.getInputStream());
 
                 Gson gson = new GsonBuilder()
@@ -78,13 +72,8 @@ public class RetrieveWeatherTask extends AsyncTask<String, Void, ArrayList<Forec
 
                 WeatherObject weatherObject = gson.fromJson(inputStreamReader, WeatherObject.class);
 
-                realm.beginTransaction();
-                Collection<Forecast> realmForecasts = realm.copyToRealmOrUpdate(weatherObject.getForecasts());
-                realm.commitTransaction();
-
-                return new ArrayList<>(realmForecasts);
+                return new ArrayList<>(weatherObject.getForecasts());
             } finally {
-                realm.close();
                 urlConnection.disconnect();
             }
         } catch (Exception e) {

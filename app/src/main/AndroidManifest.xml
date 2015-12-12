@@ -21,6 +21,12 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".services.UpdateWeatherService"
+            android:enabled="true" />
+
+        <receiver android:name=".services.UpdateWeatherReceiver" />
+
         <activity android:name=".activities.DetailsActivity" />
 
         <activity

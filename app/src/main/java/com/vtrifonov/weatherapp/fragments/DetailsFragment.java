@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.vtrifonov.weatherapp.R;
-import com.vtrifonov.weatherapp.activities.MainActivity;
-import com.vtrifonov.weatherapp.model.Forecast;
 import com.vtrifonov.weatherapp.asynctasks.RetrieveWeatherTask;
+import com.vtrifonov.weatherapp.model.Forecast;
+import com.vtrifonov.weatherapp.services.UpdateWeatherService;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -74,8 +74,10 @@ public class DetailsFragment extends Fragment {
     }
 
     public void updateDetails(int position) {
-        Realm realm = Realm.getInstance(MainActivity.realmConfiguration);
-        RealmResults<Forecast> forecasts = realm.where(Forecast.class).findAll();
+        long currentDate = System.currentTimeMillis() / 1000;
+
+        Realm realm = Realm.getInstance(UpdateWeatherService.realmConfiguration);
+        RealmResults<Forecast> forecasts = realm.where(Forecast.class).greaterThan("date", currentDate).findAll();
 
         if (realm.isEmpty()) {
             return;

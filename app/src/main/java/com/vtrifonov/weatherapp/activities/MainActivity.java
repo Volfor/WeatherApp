@@ -1,8 +1,6 @@
 package com.vtrifonov.weatherapp.activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -14,21 +12,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vtrifonov.weatherapp.R;
+import com.vtrifonov.weatherapp.asynctasks.RetrieveWeatherTask;
 import com.vtrifonov.weatherapp.fragments.DetailsFragment;
 import com.vtrifonov.weatherapp.fragments.ListFragment;
 import com.vtrifonov.weatherapp.fragments.NoConnectionFragment;
-import com.vtrifonov.weatherapp.asynctasks.RetrieveWeatherTask;
 import com.vtrifonov.weatherapp.interfaces.WeatherGetter;
+import com.vtrifonov.weatherapp.model.Forecast;
+import com.vtrifonov.weatherapp.model.NetworkConnection;
+import com.vtrifonov.weatherapp.services.UpdateWeatherService;
+
+import java.util.ArrayList;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 public class MainActivity extends BaseActivity implements WeatherGetter, ListFragment.OnListItemSelectedListener {
 
     private static ListFragment listFragment;
     private static DetailsFragment detailsFragment;
     private static NoConnectionFragment noConnectionFragment;
-    public static RealmConfiguration realmConfiguration;
 
     private String city;
     private String country;
@@ -41,7 +42,7 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        realmConfiguration = new RealmConfiguration.Builder(this).build();
+        startService(new Intent(MainActivity.this, UpdateWeatherService.class));
 
         checkDefaults();
 
@@ -63,15 +64,15 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
         }
 
         if (savedInstanceState == null) {
-            if (isNetworkConnected()) {
+            if (NetworkConnection.isConnected(MainActivity.this)) {
                 spinner.setVisibility(View.VISIBLE);
-                RetrieveWeatherTask task = new RetrieveWeatherTask(this);
+                RetrieveWeatherTask task = new RetrieveWeatherTask(MainActivity.this);
                 task.execute(city, country);
             } else {
-                if (Realm.getInstance(realmConfiguration).isEmpty())
+                if (Realm.getInstance(UpdateWeatherService.realmConfiguration).isEmpty())
                     noConnectionFragment.getView().setVisibility(View.VISIBLE);
                 else
-                    onWeatherLoaded();
+                    updateInfo();
             }
         } else {
             position = savedInstanceState.getInt("position");
@@ -90,7 +91,12 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
     }
 
     @Override
-    public void onWeatherLoaded() {
+    public void onWeatherLoaded(ArrayList<Forecast> forecasts) {
+        UpdateWeatherService.WriteToRealm(forecasts);
+        updateInfo();
+    }
+
+    public void updateInfo() {
         listFragment.setupListView();
         currCity.setText(String.format(getString(R.string.current_city_format), city, country));
         if (isTabletLand())
@@ -132,34 +138,29 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
         }
     }
 
-    private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null;
-    }
-
     public void checkDefaults() {
-        city = SettingsActivity.getDefaults("city", this);
-        country = SettingsActivity.getDefaults("country", this);
+        city = SettingsActivity.getDefaults("city", MainActivity.this);
+        country = SettingsActivity.getDefaults("country", MainActivity.this);
 
         if (city == null || city.trim().length() == 0) {
-            SettingsActivity.setDefaults("city", "Cherkasy", this);
-            city = SettingsActivity.getDefaults("city", this);
+            SettingsActivity.setDefaults("city", "Cherkasy", MainActivity.this);
+            city = SettingsActivity.getDefaults("city", MainActivity.this);
         }
 
         if (country == null || country.trim().length() == 0) {
-            SettingsActivity.setDefaults("country", "ua", this);
-            country = SettingsActivity.getDefaults("country", this);
+            SettingsActivity.setDefaults("country", "ua", MainActivity.this);
+            country = SettingsActivity.getDefaults("country", MainActivity.this);
         }
     }
 
     public void refresh() {
-        if (isNetworkConnected()) {
+        if (NetworkConnection.isConnected(MainActivity.this)) {
             spinner.setVisibility(View.VISIBLE);
-            RetrieveWeatherTask task = new RetrieveWeatherTask(this);
+            RetrieveWeatherTask task = new RetrieveWeatherTask(MainActivity.this);
             task.execute(city, country);
             noConnectionFragment.getView().setVisibility(View.GONE);
         } else {
-            Toast.makeText(this, "No Internet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "No Internet", Toast.LENGTH_SHORT).show();
         }
     }
 
