@@ -99,6 +99,7 @@ public class PreferencesActivity extends PreferenceActivity {
         root.addView(bar, 0);
         bar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         bar.setTitle(R.string.preferences_label);
+        bar.setTitleTextColor(getResources().getColor(R.color.white));
 
         bar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
