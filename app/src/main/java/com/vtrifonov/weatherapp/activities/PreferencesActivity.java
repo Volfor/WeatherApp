@@ -61,6 +61,8 @@ public class PreferencesActivity extends PreferenceActivity {
         enable_service_checkBox = (CheckBoxPreference) findPreference("service_enabled");
         check_interval_list = (ListPreference) findPreference("update_interval");
 
+        check_interval_list.setEnabled(enable_service_checkBox.isChecked());
+
         enable_service_checkBox.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 check_interval_list.setEnabled(enable_service_checkBox.isChecked());
