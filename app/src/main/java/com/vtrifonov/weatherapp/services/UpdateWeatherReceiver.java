@@ -1,11 +1,14 @@
 package com.vtrifonov.weatherapp.services;
 
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
+import com.vtrifonov.weatherapp.R;
+import com.vtrifonov.weatherapp.activities.MainActivity;
 import com.vtrifonov.weatherapp.model.Forecast;
 
 import java.util.ArrayList;
@@ -29,13 +32,20 @@ public class UpdateWeatherReceiver extends BroadcastReceiver {
             realm.commitTransaction();
             realm.close();
 
-            UpdateWeatherService.notificationManager.cancel(UpdateWeatherService.NOTIFICATION_ID);
-
-            Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-            context.sendBroadcast(it);
-
             Log.d("MY_LOG", "action update");
-            Toast.makeText(context, "Updated", Toast.LENGTH_SHORT).show();
+
+            NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
+                    .setSmallIcon(R.drawable.ic_stat_thunder_512)
+                    .setContentTitle("Weather updated")
+                    .setContentText("Touch to see the forecast")
+                    .setAutoCancel(true);
+
+            Intent resultIntent = new Intent(context, MainActivity.class);
+            PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            builder.setContentIntent(resultPendingIntent);
+
+            UpdateWeatherService.notificationManager.notify(UpdateWeatherService.NOTIFICATION_ID, builder.build());
         }
     }
 
