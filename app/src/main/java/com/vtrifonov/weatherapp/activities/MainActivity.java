@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
 
         realmConfiguration = new RealmConfiguration.Builder(this).build();
 
-        if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("service_enabled", true)){
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("service_enabled", true)) {
             startService(new Intent(this, UpdateWeatherService.class));
         }
 
@@ -100,7 +100,6 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
 
     @Override
     public void onWeatherLoaded(ArrayList<Forecast> forecasts) {
-//        UpdateWeatherService.WriteToRealm(forecasts);
         Realm realm = Realm.getInstance(realmConfiguration);
 
         realm.beginTransaction();
@@ -145,30 +144,12 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
                 startActivity(intent);
                 return true;
             case R.id.action_refresh:
-//                checkDefaults();
                 refresh();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
-//    public void checkDefaults() {
-////        city = SettingsActivity.getDefaults("city", MainActivity.this);
-////        country = SettingsActivity.getDefaults("country", MainActivity.this);
-//
-//
-//
-////        if (city == null || city.trim().length() == 0) {
-////            SettingsActivity.setDefaults("city", "Cherkasy", MainActivity.this);
-////            city = SettingsActivity.getDefaults("city", MainActivity.this);
-////        }
-////
-////        if (country == null || country.trim().length() == 0) {
-////            SettingsActivity.setDefaults("country", "ua", MainActivity.this);
-////            country = SettingsActivity.getDefaults("country", MainActivity.this);
-////        }
-//    }
 
     public void refresh() {
         if (NetworkConnection.isConnected(MainActivity.this)) {
