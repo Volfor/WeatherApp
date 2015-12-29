@@ -47,10 +47,6 @@ public class UpdateWeatherService extends Service implements WeatherGetter {
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         Log.d("MY_LOG", "Service created");
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
 
         final String city = sharedPreferences.getString("city", "Cherkasy");
         final String country = sharedPreferences.getString("country", "ua");
@@ -65,9 +61,11 @@ public class UpdateWeatherService extends Service implements WeatherGetter {
                     Log.d("MY_LOG", "Service onStartCommand");
                 }
             }
-
         }, 10000, UPDATE_INTERVAL * 60000);
+    }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
         return Service.START_STICKY;
     }
 
@@ -87,9 +85,11 @@ public class UpdateWeatherService extends Service implements WeatherGetter {
 
         Intent updateIntent = new Intent(UpdateWeatherService.this, UpdateWeatherReceiver.class);
         updateIntent.setAction(ACTION_UPDATE);
-        PendingIntent pendingIntentUpdate = PendingIntent.getBroadcast(UpdateWeatherService.this, 0, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntentUpdate = PendingIntent.getBroadcast(UpdateWeatherService.this, 0,
+                updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat.Builder(UpdateWeatherService.this)
+        NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat
+                .Builder(UpdateWeatherService.this)
                 .setSmallIcon(R.drawable.ic_stat_thunder_512)
 //                .setLargeIcon((((BitmapDrawable) getResources().getDrawable(R.mipmap.ic_launcher)).getBitmap()))
                 .setContentTitle("Weather update available")
@@ -99,7 +99,8 @@ public class UpdateWeatherService extends Service implements WeatherGetter {
                 .setAutoCancel(true);
 
         Intent resultIntent = new Intent(UpdateWeatherService.this, MainActivity.class);
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(UpdateWeatherService.this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(UpdateWeatherService.this, 0,
+                resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         builder.setContentIntent(resultPendingIntent);
 

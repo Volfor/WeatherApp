@@ -77,7 +77,7 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
                 RetrieveWeatherTask task = new RetrieveWeatherTask(MainActivity.this);
                 task.execute(city, country);
             } else {
-                if (Realm.getInstance(UpdateWeatherService.realmConfiguration).isEmpty())
+                if (Realm.getInstance(realmConfiguration).isEmpty())
                     noConnectionFragment.getView().setVisibility(View.VISIBLE);
                 else
                     updateInfo();
