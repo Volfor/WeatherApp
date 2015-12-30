@@ -2,6 +2,7 @@ package com.vtrifonov.weatherapp.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.vtrifonov.weatherapp.R;
+import com.vtrifonov.weatherapp.activities.MainActivity;
 import com.vtrifonov.weatherapp.adapters.Adapter;
 import com.vtrifonov.weatherapp.model.Forecast;
 import com.vtrifonov.weatherapp.services.UpdateWeatherService;
@@ -72,7 +74,12 @@ public class ListFragment extends Fragment {
     public void setupListView() {
         long currentDate = System.currentTimeMillis() / 1000;
 
-        Realm realm = Realm.getInstance(UpdateWeatherService.realmConfiguration);
+        Realm realm;
+        if (PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("service_enabled", true)) {
+            realm = Realm.getInstance(UpdateWeatherService.realmConfiguration);
+        } else {
+            realm = Realm.getInstance(MainActivity.realmConfiguration);
+        }
         RealmResults<Forecast> forecasts = realm.where(Forecast.class).greaterThan("date", currentDate).findAll();
 
         if (adapter == null) {
