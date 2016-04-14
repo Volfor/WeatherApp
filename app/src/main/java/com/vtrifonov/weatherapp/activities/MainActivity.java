@@ -87,12 +87,6 @@ public class MainActivity extends BaseActivity implements WeatherGetter, ListFra
             if (position >= 0) {
                 if (isTabletLand()) {
                     detailsFragment.updateDetails(position);
-                } else {
-                    if (detailsFragment != null) {
-                        Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-                        intent.putExtra("position", position);
-                        startActivity(intent);
-                    }
                 }
             }
         }
